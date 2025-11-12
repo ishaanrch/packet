@@ -48,8 +48,15 @@ for _, oldKavo in ipairs(coreGui:GetChildren()) do
     end
 end
 
+if not isfile(packetFolder..'/theme.txt') then
+    local themeUrl = game:HttpGet('https://github.com/ishaanrch/packet/raw/refs/heads/main/defaultTheme'):gsub('\n', '')
+    writefile(packetFolder..'/theme.txt', themeUrl)
+end
+
+local theme = readfile(packetFolder..'/theme.txt')
+
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
-local Window = Library.CreateLib("Packet ("..packetVersion..")","Ocean")
+local Window = Library.CreateLib("Packet ("..packetVersion..")",theme or 'Midnight')
 
 local kavo
 repeat
@@ -140,8 +147,14 @@ local function notify(titleText, descriptionText, duration)
     description.TextTransparency = 0.3
 
     local bar = Instance.new("Frame")
+
     bar.Parent = notif
-    bar.BackgroundColor3 = header.title.TextColor3
+    local suc, res = pcall(function()
+        bar.BackgroundColor3 = kavo.Main.MainSide.tabFrames.OverlayTabButton.BackgroundColor3
+    end)
+    if not suc then
+        bar.BackgroundColor3 = Color3.fromRGB(255,255,255)
+    end
     bar.BackgroundTransparency = 0.4
     bar.Position = UDim2.new(0,0,0.924,0)
     bar.Size = UDim2.new(1,0,0,6)
@@ -212,7 +225,7 @@ if userInputService.TouchEnabled then
     corners.Parent = packetToggle
     addUIScaling(packetToggle,0.6)
 
-    notify('Packet loaded!','Toggle gui overlay with the packet button',7)
+    task.spawn(function() repeat task.wait() until kavo.Main.MainSide.tabFrames.OverlayTabButton notify('Packet loaded!','Toggle gui overlay with the packet button',7) end)
     kavo.Enabled = true
 else
     local keybind = tostring(readfile(packetFolder..'/keybind.txt'))
@@ -223,8 +236,48 @@ else
             end)
         end
     end)
-    notify('Packet loaded!','Toggle gui overlay with '..keybind,7)
+    task.spawn(function() repeat task.wait() until kavo.Main.MainSide.tabFrames.OverlayTabButton notify('Packet loaded!','Toggle gui overlay with '..keybind,7) end)
     kavo.Enabled = true
 end
 
-local Tab = Window:NewTab("TabName")
+local crackTab = Window:NewTab("crack")
+local overlayTab = Window:NewTab("Overlay")
+
+local crack = crackTab:NewSection("Crackhouse exploits all in one tab")
+local overlay = overlayTab:NewSection("Change how the packet gui looks to your liking")
+
+overlay:NewDropdown("Theme", "Chooses your liking of theme.", {
+    "LightTheme",
+    "DarkTheme",
+    "GrapeTheme",
+    "BloodTheme",
+    "Ocean",
+    "Midnight",
+    "Sentinel",
+    "Synapse"
+}, function(theme)
+    pcall(function()
+        if not isfolder(packetFolder) then
+            makefolder(packetFolder)
+        end
+        writefile(packetFolder..'/theme.txt', theme)
+        notify('Theme changed!', 'Restart packet for the chosen theme', 8)
+    end)
+end)
+
+local function isMobile()
+    if userInputService.TouchEnabled then
+        return true
+    else
+        return false
+    end
+end
+
+if not isMobile() then
+    overlay:NewTextBox("Change Keybind", "Changes the overlay toggle keybind", function(val)
+        local key = tostring(string.upper(val:sub(0,1)))
+	    writefile(packetFolder..'/keybind.txt', key)
+        keybind = key
+        notify('Changed keybind! (Restart)', 'Toggle the overlay with: '..key)
+    end)
+end
