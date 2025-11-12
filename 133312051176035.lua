@@ -5,29 +5,6 @@ local cloneref = cloneref or function(obj)
     return obj
 end
 
-local packetVersion = readLink('https://github.com/ishaanrch/packet/raw/refs/heads/main/version')
-local packetFolder = 'Packet'..packetVersion
-local assetsFolder = packetFolder..'/Assets'
-local packetFiles = {
-    ['Assets/packet.png'] = game:HttpGet('https://github.com/ishaanrch/packet/blob/main/Assets/Packet.png?raw=true')
-}
-
-for _, folder in {packetFolder, packetFolder..'/Assets'} do
-    if not isfolder(folder) then
-        makefolder(folder)
-    end
-end
-
-for fileName, fileContents in pairs(packetFiles) do
-    if not isfile(packetFolder..'/'..fileName) or readfile(packetFolder..'/'..fileName) ~= fileContents then
-        writefile(packetFolder..'/'..fileName, fileContents)
-    end
-end
-
-if not isfile(packetFolder..'/keybind.txt') then
-    writefile(packetFolder..'/keybind.txt', 'T')
-end
-
 local virtualInput = cloneref(game:GetService('VirtualInputManager'))
 local replicatedStorage = cloneref(game:GetService('ReplicatedStorage'))
 local coreGui = cloneref(game:GetService('CoreGui'))
