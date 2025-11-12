@@ -154,7 +154,7 @@ end
 
 local function packetLauncher(placeId)
     local path = gamesFolder..'/'..placeId..'.lua'
-    local url = 'https://github.com/ishaanrch/packet/raw/refs/heads/main/'..placeId..'.lua'
+    local url = 'https://github.com/ishaanrch/packet/raw/refs/heads/main/Games/'..placeId..'.lua'
     local watermark = '--This watermark is here for this file to automatically update if any changes are made to it on the github, if deleted, this watermark will no longer update this file.\n'
     local shouldUpdate = false
     if isfile(path) then
