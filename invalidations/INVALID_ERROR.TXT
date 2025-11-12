@@ -1,0 +1,5 @@
+This plain text is existing because this folder is an older or other version of packet
+
+I'd suggest that you should just delete this and move onto the other packet folder without this file
+
+Thanks! =)
