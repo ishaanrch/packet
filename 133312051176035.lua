@@ -1,6 +1,12 @@
 local function readLink(url)
-    return game:HttpGet(url):gsub('\n','')
+    return game:HttpGet(url):gsub('\n', '')
 end
+
+local packetVersion = readLink('https://github.com/ishaanrch/packet/raw/refs/heads/main/version')
+local packetFolder = 'Packet'..packetVersion
+local assetsFolder = packetFolder..'/Assets'
+local gamesFolder = packetFolder..'/Games'
+
 local cloneref = cloneref or function(obj)
     return obj
 end
