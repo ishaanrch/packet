@@ -236,10 +236,10 @@ else
     kavo.Enabled = true
 end
 
-local crackTab = Window:NewTab("crack")
+local crackTab = Window:NewTab("Universal")
 local overlayTab = Window:NewTab("Overlay")
 
-local crack = crackTab:NewSection("Crackhouse exploits all in one tab")
+local crack = crackTab:NewSection("All universal exploits in one tab")
 local overlay = overlayTab:NewSection("Change how the packet gui looks to your liking")
 
 overlay:NewDropdown("Theme", "Chooses your liking of theme.", {
