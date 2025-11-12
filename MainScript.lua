@@ -104,6 +104,8 @@ local packetFolder = 'Packet'..packetVersion
 local assetsFolder = packetFolder..'/Assets'
 local gamesFolder = packetFolder..'/Games'
 
+local defaultKeybind = readLink('https://github.com/ishaanrch/packet/raw/refs/heads/main/defaultKeybind'):upper()
+
 for _, folder in ipairs(listfiles('')) do
     if folder:find('Packet') then
         if not folder:find(packetVersion) then
@@ -132,7 +134,7 @@ for fileName, fileContents in pairs(packetFiles) do
 end
 
 if not isfile(packetFolder..'/keybind.txt') then
-    writefile(packetFolder..'/keybind.txt', 'T')
+    writefile(packetFolder..'/keybind.txt', defaultKeybind)
 end
 
 local success, result = pcall(function()
