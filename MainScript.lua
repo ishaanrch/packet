@@ -99,28 +99,6 @@ local function notify(titleText, descriptionText, duration)
     end)()
 end
 
-local oldLoadstring = loadstring
-loadstring = function(str)
-    local fn, err = oldLoadstring(str)
-    if not fn then
-        notify('Runtime Error', tostring(err), 60)
-        task.delay(60, function()
-            deleteNotificationFrames()
-        end)
-        return function() end
-    end
-    return function(...)
-        local s, e = pcall(fn, ...)
-        if not s then
-            notify('Runtime Error', tostring(e), 60)
-            task.delay(60, function()
-                deleteNotificationFrames()
-            end)
-        end
-        return s, e
-    end
-end
-
 local packetVersion = readLink('https://github.com/ishaanrch/packet/raw/refs/heads/main/version')
 local packetFolder = 'Packet'..packetVersion
 local assetsFolder = packetFolder..'/Assets'
@@ -167,6 +145,13 @@ local function notifySys(title, description, icon)
     cloneref(game:GetService('StarterGui')):SetCore('SendNotification', {Title = title, Text = description, Duration = 5, Icon = icon})
 end
 
+local run = function(fn, dur)
+    local s, e = pcall(fn)
+    if not s then
+        notify('Runtime Error', tostring(e), dur or 60)
+    end
+end
+
 local function packetLauncher(placeId)
     local path = gamesFolder..'/'..placeId..'.lua'
     local url = 'https://github.com/ishaanrch/packet/raw/refs/heads/main/'..placeId..'.lua'
@@ -184,7 +169,9 @@ local function packetLauncher(placeId)
         local newData = watermark..game:HttpGet(url)
         writefile(path, newData)
     end
-    loadstring(readfile(path))()
+    run(function()
+        loadstring(readfile(path))()
+    end)
 end
 
 if gameScript then
