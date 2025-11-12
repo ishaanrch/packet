@@ -3,3 +3,5 @@ This plain text is existing because this folder is an older or other version of 
 I'd suggest that you should just delete this and move onto the other packet folder without this file
 
 Thanks! =)
+
+(Also, I was just gonna make it so instead of this file being here, this directory would've just been delete, I'll not do that and let you do anything want with it if curios.)
