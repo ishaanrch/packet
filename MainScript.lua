@@ -174,10 +174,10 @@ local function packetLauncher(placeId)
     end)
 end
 
-if gameScript then
-    notifySys('Supported game!', 'Packet supports this game, running...', 'rbxassetid://14562122532')
+local suc, res = pcall(function()
     packetLauncher(game.PlaceId)
-else
-    notifySys('Game isn\'t supported!', 'Packet doesn\'t support this game, running universal...', 'rbxassetid://18797440055')
+end)
+
+if not suc then
     packetLauncher('universal')
 end
