@@ -7,6 +7,17 @@ local packetFolder = 'Packet'..packetVersion
 local assetsFolder = packetFolder..'/Assets'
 local gamesFolder = packetFolder..'/Games'
 
+for _, folder in ipairs(listfiles('')) do
+    if folder:find('Packet') then
+        if not folder:find(packetVersion) then
+            if not isfile(folder..'/INVALID_VERSION.TXT') then
+                writefile(folder..'/INVALID_VERSION.TXT', game:HttpGet('https://github.com/ishaanrch/packet/raw/refs/heads/main/invalidations/INVALID_ERROR.TXT'))
+            end
+        end
+    end
+end
+
+
 local packetFiles = {
     ['Assets/Packet.png'] = game:HttpGet('https://github.com/ishaanrch/packet/blob/main/Assets/Packet.png?raw=true')
 }
