@@ -15,6 +15,7 @@ local virtualInput = cloneref(game:GetService('VirtualInputManager'))
 local replicatedStorage = cloneref(game:GetService('ReplicatedStorage'))
 local coreGui = cloneref(game:GetService('CoreGui'))
 local userInputService = cloneref(game:GetService('UserInputService'))
+local runService = cloneref(game:GetService('RunService'))
 
 local keyMapping = {
     ['1'] = Enum.KeyCode.One,
@@ -74,6 +75,8 @@ repeat
     task.wait()
 until not kavo.Enabled
 
+kavo.Name = 'Packet'
+
 local function toggleOverlay()
     kavo.Enabled = not kavo.Enabled
 end
@@ -109,6 +112,8 @@ local function notify(titleText, descriptionText, duration)
     local header = mainFrame:FindFirstChild('MainHeader')
     if not header then return end
 
+    local uistroke = Instance.new('UIStroke')
+
     local notif = Instance.new("Frame")
     notif.BackgroundColor3 = header.BackgroundColor3
     notif.BorderSizePixel = 0
@@ -116,6 +121,8 @@ local function notify(titleText, descriptionText, duration)
     notif.AnchorPoint = Vector2.new(0.5,0.5)
     notif.Position = UDim2.new(0,0,0.85,0)
     notif.Parent = notificationframe
+
+    uistroke.Parent = notif
 
     local ucorner = Instance.new("UICorner")
     ucorner.CornerRadius = UDim.new(0,4)
@@ -148,15 +155,18 @@ local function notify(titleText, descriptionText, duration)
 
     local bar = Instance.new("Frame")
 
+    uistroke.Thickness = 1.5
+
     bar.Parent = notif
     local suc, res = pcall(function()
         bar.BackgroundColor3 = kavo.Main.MainSide.tabFrames.OverlayTabButton.BackgroundColor3
+        uistroke.Color = kavo.Main.MainSide.tabFrames.OverlayTabButton.BackgroundColor3
     end)
     if not suc then
+        uistroke.Color = Color3.fromRGB(255,255,255)
         bar.BackgroundColor3 = Color3.fromRGB(255,255,255)
     end
-    bar.BackgroundTransparency = 0.4
-    bar.Position = UDim2.new(0,0,0.924,0)
+    bar.Position = UDim2.new(0,0,0.943,0)
     bar.Size = UDim2.new(1,0,0,6)
 
     local barCorner = Instance.new("UICorner")
@@ -180,6 +190,10 @@ for _, kavoElement in ipairs(kavo:GetDescendants()) do
             kavoElement.Modal = true
         end
     end)
+end
+
+local function reloadGui()
+    loadstring(tostring(readfile(packetFolder..'/MainScript.lua')))()
 end
 
 if userInputService.TouchEnabled then
@@ -240,6 +254,19 @@ else
     kavo.Enabled = true
 end
 
+local uistroke = Instance.new('UIStroke')
+uistroke.Thickness = 1.5
+uistroke.Parent = kavo.Main
+
+task.spawn(function()
+    repeat
+        pcall(function()
+            uistroke.Color = kavo.Main.infoContainer:GetChildren()[3].BackgroundColor3
+        end)
+        task.wait()
+    until uistroke.Color == kavo.Main.infoContainer:GetChildren()[3].BackgroundColor3
+end)
+
 local crackTab = Window:NewTab("crack")
 local overlayTab = Window:NewTab("Overlay")
 
@@ -281,3 +308,7 @@ if not isMobile() then
         notify('Changed keybind! (Restart)', 'Toggle the overlay with: '..key)
     end)
 end
+
+overlay:NewButton('Reload Packet', 'Restarts packet (make sure modules are off!)', function()
+    reloadGui()
+end)
