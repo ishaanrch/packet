@@ -1,4 +1,4 @@
-# Kavo UI Library by xHeptc u fucktards
+# PacketXKavo UI Library by IshaanRCH (Not really..)
 
 ## Update:
 
