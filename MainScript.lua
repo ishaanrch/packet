@@ -117,7 +117,8 @@ for _, folder in ipairs(listfiles('')) do
 end
 
 local packetFiles = {
-    ['Assets/Packet.png'] = game:HttpGet('https://github.com/ishaanrch/packet/blob/main/Assets/Packet.png?raw=true')
+    ['Assets/Packet.png'] = game:HttpGet('https://github.com/ishaanrch/packet/blob/main/Assets/PacketNew.png?raw=true'),
+    ['MainScript.lua'] = game:HttpGet('https://github.com/ishaanrch/packet/raw/refs/heads/main/MainScript.lua')
 }
 
 for _, folder in ipairs({packetFolder, assetsFolder, gamesFolder}) do
@@ -183,3 +184,4 @@ end)
 if not suc then
     packetLauncher('universal')
 end
+
