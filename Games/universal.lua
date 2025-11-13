@@ -56,7 +56,7 @@ end
 
 local theme = readfile(packetFolder..'/theme.txt')
 
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local Library = loadstring(game:HttpGet("https://github.com/ishaanrch/packet/raw/refs/heads/main/archivedlibrary.lua"))()
 local Window = Library.CreateLib("Packet ("..packetVersion..")",theme or 'Midnight')
 
 local kavo
